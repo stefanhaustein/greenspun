@@ -8,4 +8,6 @@ class Block(val statements: List<Expr>) : Expr {
         } 
         return result
     }
+
+    override fun toString() = statements.joinToString("\n")
 }
