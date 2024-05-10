@@ -329,15 +329,51 @@ class WhileExpr(
 }
 
 
-And wire it up in our DSL:
+And wire them up in our DSL:
 
-```
+```kt
 class BlockBuilder {
 
-    fun If(condition: Any, init: BlockBuilder.() -> Unit) {
+    fun If(condition: Any, init: BlockBuilder.() -> Unit): IfExpr {
         val blockBuilder = BlockBuilder()
         init(blockBuilder)
         val ifExpr = IfExpr(Expr.of(condition), blockBuilder.build())
+        statements.add(ifExpr)
+        return ifExpr
+    }
+
+    fun While(condition: Any, init: BlockBuilder.() -> Unit) {
+        val blockBuilder = BlockBuilder()
+        init(blockBuilder)
+        statements.add(WhileExpr(Expr.of(condition), blockBuilder.build())
     }
 }
 
+Now we finally have enough functionality at our disposal
+to implement a "proper" simple program: FizzBuzz
+
+```kt
+val fizzBuzz = block {
+    val count = Var(20)
+
+    While (count) {
+        If (count % 5) {
+            If (count % 3) {
+                PrintLn(count)
+            }.Else {
+                PrintLn("Fizz")
+            }
+        }.Else {
+            If (count % 3) {
+                PrintLn("FizzBuzz")
+            }.Else {
+                PrintLn("Buzz")
+            }
+        }
+        Set(count, count - 1)
+    }
+}
+fizzBuzz.eval(Context(1))
+```
+
+## Functions

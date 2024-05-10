@@ -6,8 +6,8 @@ class BinaryOperator(
     val rightExpr: Expr
 ): Expr {
     override fun eval(context: Context): Any {
-        val l = (leftExpr.eval(context) as Number).toDouble()
-        val r = (rightExpr.eval(context) as Number).toDouble()
+        val l = leftExpr.evalDouble(context)
+        val r = rightExpr.evalDouble(context)
         return when (op) {
             '+' -> l + r
             '*' -> l * r
