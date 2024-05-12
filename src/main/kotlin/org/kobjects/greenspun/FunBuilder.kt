@@ -13,5 +13,4 @@ class FunBuilder : BlockBuilder(mutableListOf()) {
         variables.add(varRef)
         return varRef
     }
-
 }

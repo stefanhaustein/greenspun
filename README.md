@@ -153,9 +153,6 @@ identifiers with a capitalized letter.
 class BlockBuilder {
     var statements: mutableListOf<Expr>()
 
-    class BlockBuilder {
-    var statements = mutableListOf<Expr>()
-
     fun Print(expr: Expr) {
         statements.add(
             object : Expr {
@@ -214,8 +211,7 @@ class VarRef(val index: Int) : Expr {
 }
 ```
 
-With this in place, we still need something to assign values to variables --
-and some wireup in our block builder:
+With this in place, we still need something to assign values to variables:
 
 ```kt
 class VarAssignment(
@@ -231,13 +227,19 @@ class VarAssignment(
         if (declaration) "val var$index = $value" else "Set(var$index, $value)"
 }
 
-class BlockBuilder(var varCount: Int = 0) {
+```
+
+Finally, we need some support in the BlockBuilder
+
+```kt
+class BlockBuilder(val variables: MutableList<VarRef>) {
     var statements = mutableListOf<Expr>()
 
     fun Var(initialValue: Expr): VarRef {
-        val index = varCount++
+        val varRef = VarRef(variables.size)
+        variables.add(varRef)
         statements.add(VarAssignment(true, index, initialValue))
-        return VarRef(index)
+        return varRef
     }
 
     fun Set(target: VarRef, value: Expr) {
@@ -345,7 +347,7 @@ class BlockBuilder {
     fun While(condition: Any, init: BlockBuilder.() -> Unit) {
         val blockBuilder = BlockBuilder()
         init(blockBuilder)
-        statements.add(WhileExpr(Expr.of(condition), blockBuilder.build())
+        statements.add(WhileExpr(Expr.of(condition), blockBuilder.build()))
     }
 }
 
@@ -377,3 +379,118 @@ fizzBuzz.eval(Context(1))
 ```
 
 ## Functions
+
+For functions, we can represent the body as a block. For paramters, we'll just use
+keep track of their count and use the first local variables as parameters.
+
+```kt
+class FunRef(
+    val paramCount: Int,
+    val varCount: Int,
+    val body: Block) {
+
+    operator fun invoke(vararg args: Any) = Invocation(this, args.map { Expr.of(it) })
+}
+```
+
+We represent an invocation by an expression that calls the function: 
+
+```kt
+class Invocation(val funRef: FunRef, val args: List<Expr>) : Expr {
+
+    init {
+        require(funRef.paramCount == args.size) {
+            "Parameter count mismatch; expected: ${funRef.paramCount}; actual: ${args.size}"
+        }
+    }
+
+    override fun eval(context: Context): Any {
+        val funContext = Context(funRef.varCount)
+        for (i in 0 until args.size) {
+            funContext.variables[i] = args[i].eval(context)
+        }
+        return funRef.body.eval(funContext)
+    }
+}
+```
+
+Now we still need a way to build the function body -- including parameter
+support. For this, we'll just us a sliughtly expanded subclass of our
+block builder:
+
+```kt
+class FunBuilder : BlockBuilder(mutableListOf()) {
+
+    var paramCount = 0
+
+    fun Param(): VarRef {
+        require(statements.isEmpty()) {
+            "Parameters must be declared before all other statements"
+        }
+        val varRef = VarRef(paramCount++)
+        variables.add(varRef)
+        return varRef
+    }
+}
+```
+
+Finally, we need a way to create a program -- consisting of multiple
+function declarations. We'll just use the function declared last
+as the "main" function that will be called implicitly when 
+running the program:
+
+```kt
+fun program(init: ProgramBuilder.() -> Unit): () -> Any {
+    val builder = ProgramBuilder()
+    init(builder)
+    val funRef = builder.lastFunRef
+    require(funRef != null) {
+        "Program must declare at least one function"
+    }
+    val invocation = funRef.invoke()
+    return { invocation.eval(Context()) }
+}
+
+class ProgramBuilder() {
+    var lastFunRef: FunRef? = null
+
+    fun Fun(init: FunBuilder.() -> Unit): FunRef {
+        val builder = FunBuilder()
+        init(builder)
+        val funRef = FunRef(builder.paramCount, builder.variables.size, Block(builder.statements))
+        lastFunRef = funRef
+        return funRef
+    }
+}
+```
+
+Now we can run a small example progam containing function
+declarations as follows:
+
+```kt
+fun main() {
+    val program = program {
+        val sqr = Fun() {
+            val x = Param()
+            +(x * x)
+        }
+
+        Fun() {
+            PrintLn(sqr(5))
+        }
+    }
+
+    program()
+}
+```
+
+## Conclusion and Outlook
+
+We have shown that we can implement a full "independent" programming language 
+inside a Kotlin DSL. 
+
+While this just started as a quick idea / general proof of concept, our Kotlin 
+Webassembler is roughly based on the approach demonstrated here; for more information, 
+please refer to https://github.com/kobjects/kowa.
+
+
