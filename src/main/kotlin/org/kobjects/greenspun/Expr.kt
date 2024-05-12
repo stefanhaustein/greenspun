@@ -11,6 +11,7 @@ interface Expr {
     }
 
     operator fun plus(other: Any) = BinaryOperator('+', this, Expr.of(other))
+    operator fun times(other: Any) = BinaryOperator('*', this, Expr.of(other))
     operator fun rem(other: Any) = BinaryOperator('%', this, Expr.of(other))
     operator fun minus(other: Any) = BinaryOperator('-', this, Expr.of(other))
 
