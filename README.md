@@ -252,7 +252,7 @@ class BlockBuilder(val variables: MutableList<VarRef>) {
 
 Now we can use variables like this:
 
-```
+```kt
 val myVar = Var(Literal(40))
 Set(myVar, myVar + Literal(2))
 PrintLn(myVar)
@@ -279,13 +279,12 @@ interface Expr {
             if (value is Expr) value else Literal(value)
     }
 }
-
 ```
 
 Converting expression references in our `BlockBuilder`
 accordingly, we can write the previous example as follows:
 
-```
+```kt
 val myVar = Var(40)
 Set(myVar, myVar + 2)
 PrintLn(myVar)
