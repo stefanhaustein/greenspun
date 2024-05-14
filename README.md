@@ -317,7 +317,7 @@ class IfExpr(
 
 And a `while` expression:
 
-```
+```kt
 class WhileExpr(
     val condition: String, 
     val body: Block
@@ -328,7 +328,7 @@ class WhileExpr(
         }
     }
 }
-
+```
 
 And wire them up in our DSL:
 
@@ -349,6 +349,7 @@ class BlockBuilder {
         statements.add(WhileExpr(Expr.of(condition), blockBuilder.build()))
     }
 }
+```
 
 Now we finally have enough functionality at our disposal
 to implement a "proper" simple program: FizzBuzz
