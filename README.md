@@ -3,7 +3,9 @@ _This is work in progress!_
 # How Far can we Take Kotlin DSLs? Yes!
 
 Is it possible to build a full "inner" programming language as a
-Kotlin DSL? For science, we have to find out! 
+Kotlin DSL? 
+
+For science, we have to find out! 
 
 
 
@@ -12,7 +14,8 @@ Kotlin DSL? For science, we have to find out!
 Before we start our DSL, let's quickly build up expressions as a building block.
 
 
-Let's assume our languages uses an interface `Expr` to represent expressions that we can evaluate in some context that we'll come back to later: 
+Let's assume our languages uses an interface `Expr` to represent expressions
+that we can evaluate in some context that we'll come back to later: 
 
 
 ```kt
@@ -484,13 +487,27 @@ fun main() {
 }
 ```
 
+
 ## Conclusion and Outlook
 
-We have shown that we can implement a full "independent" programming language 
+While there is a lot of stuff that could still be added, I think we have
+sufficiently demonstrated that it's possible to implement a full "independent" programming language 
 inside a Kotlin DSL. 
 
+The full source code and all examples are available here: https://github.com/stefanhaustein/greenspun
+
+When extending the language, there are some problems we have skipped over so far:
+
+- While mathematical operators can be overloaded in a way that works for our purposes, this 
+  is not possible for assignments, relational operators and equality checks; these have to be
+  supported in a different way, 
+
+- Functions can't be referenced inside their own declaration and forward references
+  are also not possible. This could be fixed using explicit forward declarations. 
+
+
 While this just started as a quick idea / general proof of concept, our Kotlin 
-Webassembler is roughly based on the approach demonstrated here; for more information, 
+Webassembler is roughly based on the approach demonstrated here. For more information, 
 please refer to https://github.com/kobjects/kowa.
 
 
