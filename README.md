@@ -1,12 +1,30 @@
 _This is work in progress!_
 
-# How Far can we Take Kotlin DSLs? Yes!
+# How Far Can We Take Kotlin DSLs? Yes!
 
-Is it possible to build a full "inner" programming language as a
-Kotlin DSL? 
+Greenspun's tenth rule of programming states that "any sufficiently 
+complicated C or Fortran program contains an ad hoc, informally-specified, bug-ridden, slow implementation of half 
+of Common Lisp."
 
-For science, we have to find out! 
+Despite Kotlin offering functional programming facilities far
+beyond Fortran or C, there are still valid general reasons
+for embedding some kind of "scripting language" like Lua.
 
+One "typical" reason is the ability to dynamically add code,
+e.g. as part of system configuration. But there are other
+reasons for some form of "inner" language. For instance,
+taking [Hugo Tunius' custom control structures for 
+Swift](https://hugotunius.se/2014/08/19/custom-control-structures-in-swift.html) to 
+a whole new level should clearly demonstrate that Kotlin is the better 
+language ;)
+
+So the question we are tackling here is whether it possible 
+to build a full "inner" programming language with 
+"reasonable" syntax as a Kotlin DSL?
+
+To get a better idea what we are aiming at, it might make 
+sense to scroll down to the "FizzBuzz" example before
+taking a look at the steps that get us there.
 
 
 ## Expressions
@@ -123,7 +141,8 @@ Which should just print `42.0`.
 Of course there is a simpler way to calculate the sum of
 40 and 2. The important difference here is that we have generated an expression tree that we can inspect and manipulate and where we can repeat the included operations if we want to.
 
-For instance, after adding variables to our expressions, we could implement symbolic derivation. 
+For instance, after adding variables to our expressions, we could use this 
+representation to implement symbolic derivation or integration. 
 
 
 ## Blocks 
