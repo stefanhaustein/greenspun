@@ -7,10 +7,10 @@ complicated C or Fortran program contains an ad hoc, informally-specified, bug-r
 of Common Lisp."
 
 Despite Kotlin offering functional programming facilities far
-beyond Fortran or C, there are still valid general reasons
+beyond Fortran or C, there are still valid reasons
 for embedding some kind of "scripting language" like Lua.
 
-One "typical" reason is the ability to dynamically add code,
+One "typical" motivation is the ability to dynamically add code,
 e.g. as part of system configuration. But there are other
 reasons for some form of "inner" language. For instance,
 taking [Hugo Tunius' custom control structures for 
