@@ -6,25 +6,30 @@ Greenspun's tenth rule of programming states that "any sufficiently
 complicated C or Fortran program contains an ad hoc, informally-specified, bug-ridden, slow implementation of half 
 of Common Lisp."
 
-Despite Kotlin offering functional programming facilities far
-beyond Fortran or C, there are still valid reasons
-for embedding some kind of "scripting language" like Lua.
+Kotlin has some interesting features that suggest that it might be possible to
+add such an "inner" language directly in Kotlin -- without the need of an
+additional parser:
 
-One "typical" motivation is the ability to dynamically add code,
-e.g. as part of system configuration. But there are other
-reasons for some form of "inner" language. For instance,
-taking [Hugo Tunius' custom control structures for 
-Swift](https://hugotunius.se/2014/08/19/custom-control-structures-in-swift.html) to 
-a whole new level should clearly demonstrate that Kotlin is the better 
-language ;)
+- Implicit closures allow the addition of "custom" control structures, 
+  similar to [Hugo Tunius' custom control structures for
+  Swift](https://hugotunius.se/2014/08/19/custom-control-structures-in-swift.html)
 
-So the question we are tackling here is whether it possible 
+- Operator overloading allows us to build a custom expression tree
+
+- Finally, Kotlin's DSL feature allows us to do this all this in a special
+  implicit context
+
+Of course, one "typical" motivation for adding a scripting 
+language such as Lua is the ability to dynamically add code,
+e.g. as part of system configuration, which won't work if we use the 
+Kotlin compiler in our language. 
+
+However, this shouldn't stop us from figuring out it possible 
 to build a full "inner" programming language with 
-"reasonable" syntax as a Kotlin DSL?
+"reasonable" syntax as a Kotlin DSL.
 
-To get a better idea what we are aiming at, it might make 
-sense to scroll down to the "FizzBuzz" example before
-taking a look at the steps that get us there.
+If you are just interested in what the end result looks like, don't
+hesitate to skip the process and jump ahead to the "FizzBuzz" example.
 
 
 ## Expressions
