@@ -10,7 +10,7 @@ Kotlin has some interesting features that suggest that it might be possible to
 add such an "inner" language directly in Kotlin -- without the need of an
 additional parser:
 
-- Implicit closures allow the addition of "custom" control structures, 
+- Trailing closures allow the addition of "custom" control structures, 
   similar to [Hugo Tunius' custom control structures for
   Swift](https://hugotunius.se/2014/08/19/custom-control-structures-in-swift.html)
 
