@@ -518,7 +518,7 @@ While there is a lot of stuff that could still be added, I think we have
 sufficiently demonstrated that it's possible to implement a full "independent" programming language 
 inside a Kotlin DSL. 
 
-The full source code and all examples are available here: https://github.com/stefanhaustein/greenspun
+The full source code and all examples are available here: [https://github.com/stefanhaustein/greenspun](https://github.com/stefanhaustein/greenspun/tree/main/src/main/kotlin/org/kobjects/greenspun)
 
 When extending the language, there are some problems we have skipped over so far:
 
