@@ -7,7 +7,7 @@ complicated C or Fortran program contains an ad hoc, informally-specified, bug-r
 of Common Lisp."
 
 Kotlin has some interesting features that suggest that it might be possible to
-add such an "inner" language directly in Kotlin -- without the need of an
+add such an "inner" language directly in Kotlin -- without the need for an
 additional parser:
 
 - Trailing closures allow the addition of "custom" control structures, 
@@ -24,7 +24,7 @@ language such as Lua is the ability to dynamically add code,
 e.g. as part of system configuration, which won't work if we use the 
 Kotlin compiler in our language. 
 
-However, this shouldn't stop us from figuring out it possible 
+However, this shouldn't stop us from figuring out if it is possible 
 to build a full "inner" programming language with 
 "reasonable" syntax as a Kotlin DSL.
 
@@ -37,7 +37,7 @@ hesitate to skip the process and jump ahead to the "FizzBuzz" example.
 Before we start our DSL, let's quickly build up expressions as a building block.
 
 
-Let's assume our languages uses an interface `Expr` to represent expressions
+Let's assume our language uses an interface `Expr` to represent expressions
 that we can evaluate in some context that we'll come back to later: 
 
 
@@ -124,8 +124,8 @@ code snippet:
 val addExpr = Literal(40) + Literal(2)
 ```
 
-As we have implemented toString()-funcitons for
-all our expressions classes, we can verify that 
+As we have implemented toString()-functions for
+all our expression classes, we can verify that 
 the expression is constructed correctly via
 
 ```kt
@@ -219,7 +219,7 @@ command moved to our inner language now.
 
 ## Variables
 
-We'll implement variables by storing then in an array in our Context object:
+We'll implement variables by storing them in an array in our Context object:
 
 ```kt
 class Context(size: Int = 0) {
@@ -288,9 +288,9 @@ PrintLn(myVar)
 ### Simplifying Literals
 
 We can avoid some of the explicit `Literal()` calls
-by automatically turning value into literals where we
+by automatically turning values into literals where we
 know an expression is expected. For this,
-we expand out expression class as follows:
+we expand our expression class as follows:
 
 ```kt
 interface Expr {
@@ -407,7 +407,7 @@ fizzBuzz.eval(Context(1))
 
 ## Functions
 
-For functions, we can represent the body as a block. For paramters, we'll just use
+For functions, we can represent the body as a block. For paramters, we'll just 
 keep track of their count and use the first local variables as parameters.
 
 ```kt
@@ -442,7 +442,7 @@ class Invocation(val funRef: FunRef, val args: List<Expr>) : Expr {
 ```
 
 Now we still need a way to build the function body -- including parameter
-support. For this, we'll just us a sliughtly expanded subclass of our
+support. For this, we'll just us a slightly expanded subclass of our
 block builder:
 
 ```kt
@@ -524,7 +524,7 @@ When extending the language, there are some problems we have skipped over so far
 
 - While mathematical operators can be overloaded in a way that works for our purposes, this 
   is not possible for assignments, relational operators and equality checks; these have to be
-  supported in a different way, 
+  supported in a different way.
 
 - Functions can't be referenced inside their own declaration and forward references
   are also not possible. This could be fixed using explicit forward declarations. 
